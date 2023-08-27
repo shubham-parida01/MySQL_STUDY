@@ -17,7 +17,7 @@ datatypes = {
 db = mysql.connector.connect(
     host='localhost',
     user='root',
-    password='Shubham00@#'
+    password='your_password'
 )
 
 # Create a cursor to interact with the database
