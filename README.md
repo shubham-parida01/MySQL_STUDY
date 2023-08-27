@@ -25,7 +25,7 @@ MySQL is a popular open-source relational database management system. It's widel
 
 Before you start using the MySQL Connector/Python, you'll need:
 
-- Python installed on your system (version X.X or higher)
+- Python installed on your system (version 3.9 or 3.10)
 - A MySQL server instance running (locally or remotely)
 - Basic understanding of SQL and database concepts
 
