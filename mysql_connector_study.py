@@ -36,23 +36,43 @@ class Main:
         except:
             return False
 
-    def create_table(self, database_name: str, table_name: str):  # creates a table in the provided database
+   def create_table(self, database_name: str, table_name: str):
         values = {}
+        primary_key = None  # Store the primary key column name
+
         column_num = int(input("Enter Number of Columns:"))
 
         for i in range(column_num):
             column_name = input(f'Enter Column name:')
             datatype = str(input('Enter datatype:')).lower()
             limit = int(input('Enter Limit:'))
+
+            primary = input("Is it a Primary key? (enter 'y' or 'n'):").lower() == 'y'
             values[column_name] = [datatypes.get(datatype, 'varchar'), limit]
+
+            if primary:
+                if primary_key is not None:
+                    print("Error: Only one primary key allowed per table.")
+                    return False
+                primary_key = column_name
 
         try:
             cursor.execute(f'USE {database_name}')
-            columns = ', '.join(f"{column} {data[0]}({data[1]})" for column, data in values.items())
-            cursor.execute(f'CREATE TABLE {table_name} ({columns})')
+
+            # Construct column definitions with primary key constraint
+            columns = []
+            for column, data in values.items():
+                column_def = f"{column} {data[0]}({data[1]})"
+                if column == primary_key:
+                    column_def += " PRIMARY KEY"
+                columns.append(column_def)
+
+            columns_str = ', '.join(columns)
+            cursor.execute(f'CREATE TABLE {table_name} ({columns_str})')
+
             db.commit()
             return True
-        
+
         except Exception as e:
             print("Error:", e)
             return False
